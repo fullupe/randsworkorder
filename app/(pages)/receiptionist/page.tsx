@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import {Circles } from  'react-loader-spinner'
 
@@ -10,8 +10,23 @@ import {useChangeStatus} from  "../../hooks/useChangeStatus"
 import { useUserContext } from '@/app/context/userContex'
 import { useFetchDataSheet2 } from '@/app/hooks/useFetchDataSheet2';
 
+import options from "../../../problemDescription"
+import Select from 'react-select';
+import makeAnimated from"react-select/animated"
+const animatedComponents = makeAnimated()
+
+import { MultiSelect, MultiSelectItem } from "@tremor/react";
+
+import { useReactToPrint } from 'react-to-print';
+import PrintProDesc from '../../components/print';
+
 
 function Receiptionist() {
+
+  const componentRef = useRef(null);
+  const handlePrint= useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const {user}=useUserContext()
 
@@ -22,7 +37,11 @@ function Receiptionist() {
 
      setActiveUser(user.username);
    }
+   
+
   },[])
+
+
 
   const {add_To_Sheet2,delete_From_Sheet2, Loading}=useChangeStatus()
   
@@ -33,12 +52,18 @@ function Receiptionist() {
   const [input, setInput] = useState<string>('')
   
   const [tpmInfo, setTpmInfo] = useState<any>('')
+
+  const [problemDesc, setProblemDesc] = useState<string[]>([])
+
+
+  //console.log(problemDesc)
   
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+     
     const foundItem = DataApi.find((val: { tpm: string }) => val.tpm == input);
-
+   
     if (foundItem) {
       // Match found
       setTpmInfo(foundItem);
@@ -58,7 +83,6 @@ function Receiptionist() {
   
         setFetchReflesh(!fetchReflesh)
 
-
   }
 
   const handleSubmitIn= async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
@@ -72,6 +96,10 @@ function Receiptionist() {
       add_To_Sheet2(request)
       setInput("")
       setFetchReflesh2(!fetchReflesh2)
+      
+      handlePrint()
+
+      setProblemDesc([])
   }
 
   const handleSubmitOut= async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
@@ -86,24 +114,15 @@ function Receiptionist() {
 
   }
 
-
-
-
-  const statusColor = tpmInfo.status == 'Ready ✅' ? 'bg-[#00C600] text-white' : // @ts-ignore 
-  tpmInfo.status == 'Working On' ? 'bg-[#152E61] text-white' : // @ts-ignore 
-  tpmInfo.status == 'Water Entered' ? 'bg-[#877FBF] text-white' :// @ts-ignore 
- 
-  tpmInfo.status == 'On Test' ? 'bg-[#315EA7] text-white' :  // @ts-ignore 
+  //const handleSelectChange = (selected:string[]) => {
    
-  tpmInfo.status == 'Waiting for Part' ? 'bg-[#8EEEF7] text-whited' :// @ts-ignore 
-  
-  "bg-[#E7223B] text-white "; 
-
+    //setProblemDesc(selected);
+  //};
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-red-100">
      <div
-      className='py-4 px-6 bg-white bg-gradient-to-r from-sky-100 to-indigo-500 shadow-2xl h-4/5 md:max-w-md !important text-lg rounded-2xl relativee absolutev  flex flex-col h leading- w-[98%] text-white mt-8 mb-12 overflow-hidden'
+      className='py-4 px-6 bg-white bg-gradient-to-r from-sky-100 to-indigo-500 shadow-2xl h-[100%] md:max-w-md !important text-lg rounded-2xl relativee absolutev  flex flex-col h leading- w-[98%] text-white mt-8 mb-12 overflow-hidden'
     >
 
       
@@ -196,16 +215,56 @@ function Receiptionist() {
 
         <hr />
 
+            <div className="max-w-smd flex flex-col mx-auto space-y-2 w-full">
+              <p className="text-orange-500 font-bold mb-0">Problem Description</p>
+
+
+              <Select
+              className="text-black z-50 text-sm  flex-1 w-full"
+              //defaultValue={[options[2], options[3]]}
+              isMulti
+              //value="problemDesc"
+              options={options}
+              //className="basic-multi-select"
+              //classNamePrefix="select"
+              closeMenuOnSelect={false}
+              isSearchable={true}
+              components={animatedComponents}// @ts-ignore
+              onChange={(item)=>setProblemDesc(item)}
+               
+            />
+
+            {/* <MultiSelect
+            className="z-50 pb-20 flex"
+             options={options}
+             value={problemDesc} // @ts-ignore
+             onChange={handleSelectChange} 
+            >
+
+              {options.map((option) => (
+                <MultiSelectItem key={option.value} value={option.value} />
+                ))}
+              
+            </MultiSelect> */}
+        
+        
+            </div>
+
+            <PrintProDesc componentRef={componentRef} tpm={tpmInfo.tpm} problem={problemDesc} receivedBy={activeUser}/>
+
         <div className=" flex flex-col  w-full bg-yellow-00 pb-8 ">
           <div className=" flex  w-full justify-center space-x-4 items-center bg-red-00">
+
             <button
               type="submit"
-              disabled={!tpmInfo.tpm || !input}
+              disabled={!tpmInfo.tpm || !input || problemDesc.length == 0}
               onClick={handleSubmitIn}
               className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-8 border border-orange-400 hover:border-transparent rounded disabled:text-gray-500"
             >
               Tpm In
             </button>
+
+
             <button
               type="submit"
               disabled={!tpmInfo.tpm || !input}
@@ -224,3 +283,7 @@ function Receiptionist() {
 }
 
 export default Receiptionist
+
+function handlePrint() {
+  throw new Error('Function not implemented.');
+}

@@ -12,15 +12,14 @@ function Admin() {
   const {user}=useUserContext()
 
   const [isActiveComponet, setIsActiveComponet]=useState('')
-  //const [selectbranch,setSelectbranch]=useState('')
+
   const[openModat,setOpenModal]=useState<boolean>(false)
 
 
   if(isActiveComponet =="account") return <Account/>
   if(isActiveComponet =="admin") return <BranchDash/>
-// @ts-ignore
-    // console.log(user.username)
-    const branch = user.userbranch
+
+    const branch = user?.userbranch
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">

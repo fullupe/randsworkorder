@@ -7,15 +7,23 @@ import TimeAgo from "react-timeago"
 import Image from 'next/image';
 import { useFetchDataSheet2 } from './hooks/useFetchDataSheet2';
 
+type Ttpminfo={
+  tpm:string,
+  agentName:string,
+  branch:string,
+  status:string,
+  createdAt:string,
+  ruser:string,
+}
 
 
 function Agent() {
 
-    const [input, setInput] = useState<string>('')
+  const [input, setInput] = useState<string>('')
 
   const {DataApi2,fetchReflesh2,setFetchReflesh2}=useFetchDataSheet2()
 
-  const [tpmInfo, setTpmInfo] = useState<any>('')
+  const [tpmInfo, setTpmInfo] = useState<Ttpminfo | null>(null)
 
 
   interface val  { 
@@ -23,13 +31,12 @@ function Agent() {
   }
 
   
-  
   //console.log(DataApi)
   
   const handleSearch = (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
 
-    const foundItem = DataApi2.find((val: { tpm: string }) => val.tpm == input);
+    const foundItem:Ttpminfo = DataApi2.find((val: { tpm: string }) => val.tpm == input);
 
     if (foundItem) {
       // Match found
@@ -54,13 +61,13 @@ function Agent() {
    }
 
 
-  const statusColor = tpmInfo.status == 'Ready ✅' ? 'bg-[#00C600] text-white' : // @ts-ignore 
-  tpmInfo.status == 'Working On' ? 'bg-[#152E61] text-white' : // @ts-ignore 
-  tpmInfo.status == 'Water Entered' ? 'bg-[#877FBF] text-white' :// @ts-ignore 
+  const statusColor:string = tpmInfo?.status == 'Ready ✅' ? 'bg-[#00C600] text-white' : 
+  tpmInfo?.status == 'Working On' ? 'bg-[#152E61] text-white' : 
+  tpmInfo?.status == 'Water Entered' ? 'bg-[#877FBF] text-white' :
  
-  tpmInfo.status == 'On Test' ? 'bg-[#315EA7] text-white' :  // @ts-ignore 
-  // row.original.status == 'See Management' ? 'bg-red-900' :// @ts-ignore 
-  tpmInfo.status == 'Waiting for Part' ? 'bg-[#8EEEF7] text-whited' :// @ts-ignore 
+  tpmInfo?.status == 'On Test' ? 'bg-[#315EA7] text-white' :
+  
+  tpmInfo?.status == 'Waiting for Part' ? 'bg-[#8EEEF7] text-whited' :
   
   "bg-[#E7223B] text-white ";
 
@@ -69,7 +76,7 @@ function Agent() {
     <div
     className={`py-2  px-6 bg-whitee bg-gradient-to-r from-sky-500 to-indigo-500 shadow-2xl h-[85%] md:max-w-md !important text-lg rounded-2xl relativee  flex flex-col h leading- w-[98%]  text-white mt-8 mb-12 overflow-hidden absolute`}
   >
-    {/* <Toaster /> */}
+    
     <ToastContainer />
     <div className="felx flex-col space-y-2">
       <div className=" h- bg-gray-00  items-center flex flex-col mt-6 ">
@@ -118,7 +125,7 @@ function Agent() {
           <div className="w-full flex flex-col mt-2 items-right space-y-4">
           <label className="font-bold">Retailer Name</label>
               <p className=" px-4 bg-gray-900 rounded-lg text-white shadow-lg border-2 border-white opacity-60">
-                {/* Retailer Name:{' '} */}
+                
                 <small className="ml-2 text-center uppercase ">
                   {tpmInfo.agentName}
                 </small>
@@ -128,7 +135,7 @@ function Agent() {
                 <div className="fle flex-col w-full">
               <label className="font-bold">Tpm Num</label>
                 <p className=" flex-1 px-4 bg-gray-900 rounded-lg text-white shadow-lg border-2 border-white opacity-60">
-                  {/* Tpm#:{' '} */}
+                  
                   <small className="ml-2 text-center ">{tpmInfo.tpm}</small>
                 </p>
 
@@ -136,7 +143,7 @@ function Agent() {
                 <div className="flex flex-col w-full">
                 <label className="font-bold"> Tpm status</label>
                 <p className={` flex-1 px-4 border-2 border-white ${statusColor} rounded-lg text-white shadow-lg opacity-60`}>
-                  {/* Status:  */}
+                 
                   <small className="ml-2 text-center ">{tpmInfo.status}</small>
                 </p>
                 </div>
@@ -157,7 +164,7 @@ function Agent() {
         </div>
       </div>
        <div className="flex justify-center py-0 my-0">
-         <p className="uppercase italic text-slate-300">{tpmInfo.branch}</p>
+         <p className="uppercase italic text-slate-300">{tpmInfo?.branch}</p>
        </div>
       <hr />
 

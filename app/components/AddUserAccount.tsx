@@ -63,7 +63,7 @@ function AddUserAccount({}: Props) {
         status:true,
     }
 
-    console.log("user",newUser)
+    //console.log("user",newUser)
 
     var xmlHttp = new XMLHttpRequest()
     xmlHttp.open('POST', `${Base_URL}addPass`, true) // false for synchronous request
