@@ -108,7 +108,7 @@ function MonitorDataTable<TData, TValue>({columns,data}: DataTableProps<TData, T
                 // {console.log(row.original.status)}
 
                                                                                       // @ts-ignore 
-                 const rowClass = row.original.status == 'Ready ✅' ? 'bg-[#00C600] text-white' : // @ts-ignore 
+                 const rowClass = row.original.status == 'Ready ✅' ? 'bg-[#00C600] text-white ' : // @ts-ignore 
                                   row.original.status == 'Working On' ? 'bg-[#152E61] text-white' : // @ts-ignore 
                                   row.original.status == 'Water Entered' ? 'bg-[#877FBF] text-white' :// @ts-ignore 
                                  
@@ -127,7 +127,7 @@ function MonitorDataTable<TData, TValue>({columns,data}: DataTableProps<TData, T
                   
 
                     {row.getVisibleCells().map(cell=>(
-                      <TableCell key={cell.id} className={`border-b-2 uppercase border-red-400 font-bold text-center  ${rowClass}`}>
+                      <TableCell key={cell.id} className={`border-b-2 uppercase  border-red-400 font-bold text-center  ${rowClass}`}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}

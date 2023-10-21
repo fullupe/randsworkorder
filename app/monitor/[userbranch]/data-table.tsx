@@ -17,9 +17,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { ColorRing } from "react-loader-spinner"
+
 
 
 //const Base_URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string;
@@ -28,11 +29,11 @@ import { ColorRing } from "react-loader-spinner"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  branch:string
 }
 
-function MonitorDataTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
+function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<TData, TValue> ) {
   
-
   const table = useReactTable({
     data,
     columns,
@@ -143,7 +144,7 @@ useEffect(() => {
                   
 
                     {row.getVisibleCells().map(cell=>(
-                      <TableCell key={cell.id} className={`border-b-2 uppercase border-red-400 font-bold text-center  ${rowClass}`}>
+                      <TableCell key={cell.id} className={`border-b-2 uppercase lg:text-4xl border-red-400 font-bold text-center  ${rowClass}`}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
@@ -155,7 +156,7 @@ useEffect(() => {
             ):(
               <TableRow className={` items-center justify-center w-full flexs`}>
                   <TableCell className="w-full items-center justifycenter bg-gray-200 min-h-screen">
-                    <div className="text-center flex w-full items-center justify-center min-h-screen" >
+                    <div className="text-center flex flex-col w-full items-center justify-center min-h-screen" >
 
                     <ColorRing
                     visible={true}
@@ -166,6 +167,8 @@ useEffect(() => {
                     wrapperClass="blocks-wrapper"
                     colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
                   />
+
+                  <p className="text-center text-7xl font-extrabold tracking-[10px] italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-bounce uppercase">{branch} office</p>
                     
                     </div>
                   </TableCell>

@@ -21,7 +21,7 @@ function Monitor({params}:{params:{userbranch:string}}) {
      //const branchInActive = branch.filter((val:{ status: string;})=>val.status !=='Already Out')
 
   return (
-   <MonitorDataTable columns={columns} data={branchInActive}/>
+   <MonitorDataTable columns={columns} data={branchInActive} branch={params.userbranch}/>
   
   )
 
