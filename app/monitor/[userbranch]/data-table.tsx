@@ -144,7 +144,7 @@ useEffect(() => {
                   
 
                     {row.getVisibleCells().map(cell=>(
-                      <TableCell key={cell.id} className={`border-b-2 uppercase lg:text-2xl border-red-400 font-bold text-center  ${rowClass}`}>
+                      <TableCell key={cell.id} className={`border-b-2 uppercase lg:text-2xl border-red-400 font-semibold text-center  ${rowClass}`}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
