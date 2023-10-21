@@ -144,7 +144,7 @@ useEffect(() => {
                   
 
                     {row.getVisibleCells().map(cell=>(
-                      <TableCell key={cell.id} className={`border-b-2 uppercase lg:text-4xl border-red-400 font-bold text-center  ${rowClass}`}>
+                      <TableCell key={cell.id} className={`border-b-2 uppercase lg:text-2xl border-red-400 font-bold text-center  ${rowClass}`}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
@@ -168,7 +168,7 @@ useEffect(() => {
                     colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
                   />
 
-                  <p className="text-center text-7xl font-extrabold tracking-[10px] italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-bounce uppercase">{branch} office</p>
+                  <p className="text-center text-6xl font-extrabold tracking-[10px] italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-bounce uppercase">{branch} office</p>
                     
                     </div>
                   </TableCell>
