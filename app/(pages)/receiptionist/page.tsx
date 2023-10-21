@@ -68,6 +68,7 @@ function Receiptionist() {
       // Match found
       setTpmInfo(foundItem);
       //setInput('');
+      setProblemDesc([])
       
       toast('Record Found!', {
         toastId: 'success',
@@ -82,6 +83,7 @@ function Receiptionist() {
     }
   
         setFetchReflesh(!fetchReflesh)
+
 
   }
 

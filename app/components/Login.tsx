@@ -51,7 +51,7 @@ function Login({}:Props) {
     const handleLogin = (e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
 
-      const user:user | any = passCodeFromDatabase.find((user) => user.username === providedUser && decrypt(user.passcode) === providedPass);
+      const user:user | any = passCodeFromDatabase.find((user) => user.username.toLowerCase() === providedUser.toLowerCase() && decrypt(user.passcode) === providedPass);
 
       
       if(user?.role == "receptionist" && user.status){ 
