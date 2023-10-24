@@ -4,13 +4,14 @@ type Tprops={
     tpm:string,
     problem:string[],
     receivedBy:string,
-    componentRef:any
+    componentRef:any,
+    agentName:string
 }
 
 type value={
 item:string
 }
-function PrintProDesc({tpm,problem,receivedBy,componentRef}:Tprops) {
+function PrintProDesc({tpm,problem,agentName, receivedBy,componentRef}:Tprops) {
   return (
 
     <div style={{display: 'none'}}>
@@ -18,6 +19,7 @@ function PrintProDesc({tpm,problem,receivedBy,componentRef}:Tprops) {
         <p className="flex font-bold uppercase underline">R$S Lotto Office</p>
 
         <p>TPM: {tpm}</p>
+        <p>Agent Name: {agentName}</p>
 
         <div className="flex flex-col  items-center">
         <p className="text-xs underline italic font-bold">Problem Description</p>

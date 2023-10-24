@@ -21,6 +21,10 @@ export const options:Option[] = [
         value:"DC plug broken"
     },
     {
+        label:"Tpm Need To Be Service",
+        value:"Tpm Need To Be Service"
+    },
+    {
         label:"Off/ Blank sometimes",
         value:"Off/ Blank sometimes"
     },
