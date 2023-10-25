@@ -12,6 +12,9 @@ type value={
 item:string
 }
 function PrintProDesc({tpm,problem,agentName, receivedBy,componentRef}:Tprops) {
+
+  let currentData = new Date().toDateString()
+
   return (
 
     <div style={{display: 'none'}}>
@@ -33,6 +36,7 @@ function PrintProDesc({tpm,problem,agentName, receivedBy,componentRef}:Tprops) {
         </div>
 
         <p className="text-sm">Received BY : <span>{receivedBy}</span></p>
+        <p className="text-sm">Date: <span>{currentData}</span></p>
         </div>
         
         
