@@ -21,6 +21,14 @@ export const options:Option[] = [
         value:"DC plug broken"
     },
     {
+        label:"Blank printing ",
+        value:"Blank printing "
+    },
+    {
+        label:"Screen Problem ",
+        value:"Screen Problem "
+    },
+    {
         label:"Tpm Need To Be Service",
         value:"Tpm Need To Be Service"
     },
