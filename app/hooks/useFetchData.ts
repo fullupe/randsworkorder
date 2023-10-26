@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useUserContext } from "../context/userContex"
 import { useChangeStatus } from "./useChangeStatus"
 
-//const URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string
+const URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string
 
 export const useFetchData=()=>{
 
@@ -23,12 +23,16 @@ export const useFetchData=()=>{
 
     async function httpGet() {
 
-
-    const Data =  await fetch("/api/fetchMainData").then((res)=>res.json().then(data=>data.data))
-    //const branchDAta = Data.filter((B_data:any)=>B_data.branch == activeUserBranchName)
-
-    setDataApi(Data)
-   
+      var xmlHttp = new XMLHttpRequest()
+      xmlHttp.open('GET', `${URL}getData`, false) // false for synchronous request
+      xmlHttp.send(null)
+      const ApiData = JSON.parse(xmlHttp.responseText)
+  
+  
+      //const Data =  await fetch("/api/fetchMainData").then((res)=>res.json().then(data=>data.data))
+      //const branchDAta = Data.filter((B_data:any)=>B_data.branch == activeUserBranchName)
+  
+      setDataApi(ApiData.data)
   }
 
   useEffect(() => {
