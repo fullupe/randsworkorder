@@ -11,12 +11,12 @@ export const useFetchDataSheet2=()=>{
 
     async function httpGet() {
 
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open('GET', `${URL}getDataFromSheet2`, false) // false for synchronous request
-    xmlHttp.send(null)
-    const ApiData = JSON.parse(xmlHttp.responseText)
+    // var xmlHttp = new XMLHttpRequest()
+    // xmlHttp.open('GET', `${URL}getDataFromSheet2`, false) // false for synchronous request
+    // xmlHttp.send(null)
+    // const ApiData = JSON.parse(xmlHttp.responseText)
 
-    // const Data =  await fetch("/api/fetchLiveData").then((res)=>res.json().then(data=>data.data))
+    const ApiData =  await fetch("/api/fetchLiveData").then((res)=>res.json().then(data=>data.data))
 
     setDataApi2(ApiData.data)
    

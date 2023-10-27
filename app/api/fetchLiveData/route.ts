@@ -5,13 +5,19 @@ const URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string
 
 export async function GET(req: Request, res: Response){
 
-    const response = await fetch(`${URL}getDataFromSheet2`,{ cache: 'no-store' })
-    const sheet2Data = await response.json()
-    
-return new Response(JSON.stringify(sheet2Data))
+    try{
+        const response = await fetch(`${URL}getDataFromSheet2`,{ cache: 'no-store' })
+        const sheet2Data = await response.json()
+        
+        return new Response(JSON.stringify(sheet2Data))
+
+    }catch(error){
+        console.error("Error fetching data:", error);
+    }
+
 
 }
-
+export const revalidate =0;
 
 // export async function POST(req: Request, res: Response){
 
