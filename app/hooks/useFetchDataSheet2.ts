@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 
-const URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string
+//const URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string
 
 export const useFetchDataSheet2=()=>{
 
