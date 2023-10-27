@@ -18,7 +18,7 @@ export const useFetchDataSheet2=()=>{
 
     const ApiData =  await fetch("/api/fetchLiveData").then((res)=>res.json().then(data=>data.data))
 
-    setDataApi2(ApiData.data)
+    setDataApi2(ApiData)
    
   }
 
