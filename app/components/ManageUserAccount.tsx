@@ -1,6 +1,7 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {CalculatorIcon } from '@heroicons/react/24/outline'
+import { useUserContext } from '@/app/context/userContex'
 
 import { ToastContainer, toast } from 'react-toastify';
 import { ColorRing } from  'react-loader-spinner';
@@ -25,7 +26,9 @@ function ManageUserAccount({}: Props) {
 
     const [errorPass,setErrorPass]=useState<string>()
 
-  
+    const {user}=useUserContext()
+    const [activeUserBranch,setActiveUserBranch]=useState('')
+    
     const [userSelected,setUserSelected]=useState('');
 
     const [newStatus, setNewStatus] = useState(''); // State to track the selected user type
@@ -33,6 +36,17 @@ function ManageUserAccount({}: Props) {
   const handleUserTypeChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setNewStatus(e.target.value);
   };
+
+
+useEffect(()=>{
+
+  if(user){
+
+    setActiveUserBranch(user.userbranch);
+  }
+
+},[])
+
 
 
 
@@ -90,7 +104,7 @@ function ManageUserAccount({}: Props) {
       <label className="block mb-1">Select User</label>
                 <Select className="z-50 pb-24 flex" value={userSelected} onValueChange={setUserSelected}>
                     {
-                        passCodeFromDatabase.map((val:any)=>(
+                        passCodeFromDatabase.filter((val)=>val.userbranch==activeUserBranch).map((val:any)=>(
 
                     <SelectItem key={val.id}  value={val.username} icon={CalculatorIcon} className="flex" >
                       <div className=" flex ml-4 items-center">

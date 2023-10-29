@@ -12,7 +12,7 @@ interface passData {
 
 export const useGetUsers=()=>{
 
-    const Base_URL:string = process.env.NEXT_PUBLIC_BASE_URL_USER as string
+    //const Base_URL:string = process.env.NEXT_PUBLIC_BASE_URL_USER as string
 
 
    const [passCodeFromDatabase,setPassCodeFromDatabas]= useState<passData[]>([])

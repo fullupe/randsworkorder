@@ -30,9 +30,9 @@ export const useFetchData=()=>{
   
   
       const ApiData =  await fetch("/api/fetchMainData").then((res)=>res.json().then(data=>data.data))
-      //const branchDAta = Data.filter((B_data:any)=>B_data.branch == activeUserBranchName)
+      const branchDAta = ApiData.filter((B_data:{branch:string})=>B_data.branch == activeUserBranchName)
   
-      setDataApi(ApiData)
+      setDataApi(branchDAta)
   }
 
   useEffect(() => {

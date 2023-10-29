@@ -15,7 +15,7 @@ import Select from 'react-select';
 import makeAnimated from"react-select/animated"
 const animatedComponents = makeAnimated()
 
-import { MultiSelect, MultiSelectItem } from "@tremor/react";
+
 
 import { useReactToPrint } from 'react-to-print';
 import PrintProDesc from '../../components/print';
@@ -31,16 +31,18 @@ function Receiptionist() {
   const {user}=useUserContext()
 
   const [activeUser,setActiveUser]=useState('')
+  
 
+  
   useEffect(()=>{
    if(user){
 
      setActiveUser(user.username);
+   
    }
    
 
   },[])
-
 
 
   const {add_To_Sheet2,delete_From_Sheet2, Loading}=useChangeStatus()
@@ -76,7 +78,7 @@ function Receiptionist() {
       });
     } else {
       // No match found
-      toast(`Tpm ${input} is Not a Valid Terminal`, {
+      toast(`Tpm ${input} is Not a Valid Terminal in Your Branch`, {
         toastId: 'error',
         icon: '🚀',
       });
@@ -116,10 +118,6 @@ function Receiptionist() {
 
   }
 
-  //const handleSelectChange = (selected:string[]) => {
-   
-    //setProblemDesc(selected);
-  //};
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-red-100">
@@ -236,19 +234,7 @@ function Receiptionist() {
                
             />
 
-            {/* <MultiSelect
-            className="z-50 pb-20 flex"
-             options={options}
-             value={problemDesc} // @ts-ignore
-             onChange={handleSelectChange} 
-            >
-
-              {options.map((option) => (
-                <MultiSelectItem key={option.value} value={option.value} />
-                ))}
-              
-            </MultiSelect> */}
-        
+           
         
             </div>
 
