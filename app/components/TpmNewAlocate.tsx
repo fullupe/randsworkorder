@@ -95,7 +95,7 @@ function TpmNewAlocate({}: Props) {
               
                 <small className="ml- text-center uppercase ">
                
-                  <input maxLength={4}
+                  <input maxLength={5}
                 type="numeric"
                  value={tpmNumber} placeholder="Tpm Number" onChange={(e)=>setTpmNumber(e.target.value)} className=" w-full px-3 font-bold py-1 border border-red-900 rounded-lg focus:outline-none focus:ring focus:ring-blue-400"/>
                 </small>

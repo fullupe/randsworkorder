@@ -80,7 +80,7 @@ function TpmReAlocate({}: Props) {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                maxLength={4}
+                maxLength={5}
                 type="numeric"
               
                 autoFocus={true}
