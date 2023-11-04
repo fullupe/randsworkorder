@@ -20,6 +20,7 @@ export const useFetchData=()=>{
   },[])
 
     const [DataApi, setDataApi] = useState<any>([])
+    const [DataApiBranchOnly, setDataApiBranchOnly] = useState<any>([])
 
     async function httpGet() {
 
@@ -33,6 +34,7 @@ export const useFetchData=()=>{
       const branchDAta = ApiData.filter((B_data:{branch:string})=>B_data.branch == activeUserBranchName)
   
       setDataApi(branchDAta)
+      setDataApiBranchOnly(ApiData)
   }
 
   useEffect(() => {
@@ -42,6 +44,6 @@ export const useFetchData=()=>{
   }, [fetchReflesh])
 
 
-  return {DataApi,fetchReflesh, setFetchReflesh}
+  return {DataApi,fetchReflesh, DataApiBranchOnly, setFetchReflesh}
 
 }
