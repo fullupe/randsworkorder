@@ -12,33 +12,46 @@ function Dashboard() {
   const {user,setUser}=useUserContext()
 
  // @ts-ignore
-    const branchName = user.userbranch
-
+    //const branchName = user.userbranch
 
 
   const [reloadpage, setReloadpage]=useState(false)
+
+  const [activeUserBranch,setActiveUserBranch]=useState('')
 
   const [filtedBrach, SetFiltedBrach]=useState([])
 
   const [filtedBrach_Problem, SetfiltedBrach_Problem]=useState([])
 
   const {DataApi}=useFetchData()
-  const {DataApi2, }=useFetchDataSheet2()
 
-  const getUserBranch=()=>{
-      const filted = DataApi.filter((val:any)=>val.branch == branchName)
+  const {DataApi2}=useFetchDataSheet2()
+
+  
+
+  useEffect(()=>{
+
+      const getUserBranch= async ()=>{
+
+      const filted =  await DataApi.filter((val:{branch:string})=>val.branch == activeUserBranch)
       SetFiltedBrach(filted);
-
-      const filtedSheet2DataByBranch = DataApi2.filter((val:any)=>val.branch == branchName)
+      const filtedSheet2DataByBranch = await  DataApi2.filter((val:{branch:string})=>val.branch == activeUserBranch)
 
        SetfiltedBrach_Problem(filtedSheet2DataByBranch)
     }
-
-  useEffect(()=>{
   
     getUserBranch()
    },[reloadpage])
  
+
+   useEffect(()=>{
+
+    if(user){
+  
+      setActiveUserBranch(user.userbranch);
+    }
+  
+  },[])
 
 
   //groupBy problem
@@ -107,12 +120,12 @@ const Inactive = TotalTpm - TotalWorkingTpm.length;
         <div className="w-full flex flex-col">
 
 
-    <p className="flex justify-center items-center uppercase  mt-4  text-white">{branchName} <span className="mx-2 uppercase text-white ">office</span></p>
+    <p className="flex justify-center items-center uppercase  mt-4  text-white">{activeUserBranch} <span className="mx-2 uppercase text-white ">office</span></p>
     <hr className="flex bg-gray-300 h-0.5 mt-2 "/>
     <div className="flex flex-wrap md:flex-rowd w-full justify-center items-center md:items-baseline text-white  ">
 
     <Card className="max-w-sm m-3 h-[400px] bg-[#262951]">
-    <Text className="text-white">Total Tpms  {branchName}</Text>
+    <Text className="text-white">Total Tpms  {activeUserBranch}</Text>
     <Metric className="text-white">{TotalTpm}</Metric>
     <CategoryBar className="mt-3 text-white  w-full" values={[Active, Inactive]} colors={["emerald", "red"]} />
     <Legend
@@ -154,7 +167,7 @@ const Inactive = TotalTpm - TotalWorkingTpm.length;
     <div className="flex flex-col-reverse w-full justify-center items-center py-2">
 
       <p className="text-white text-xs  capitalize ">reload</p>
-      <ArrowPathIcon  onClick={()=>setReloadpage(true)} className="w-8 h-8 text-white hover:rotate-90 transition duration-300 hover:text-orange-400 cursor-pointer"/>
+      <ArrowPathIcon  onClick={()=>setReloadpage(!reloadpage)} className="w-8 h-8 text-white hover:rotate-90 transition duration-300 hover:text-orange-400 cursor-pointer"/>
 
     </div>
 

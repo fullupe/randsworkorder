@@ -12,30 +12,34 @@ function TpmReAlocate({}: Props) {
 
     const [input,setInput]=useState('');
     const [tpmInfo, setTpmInfo] = useState<any>('')
-    const {DataApi,fetchReflesh,setFetchReflesh}=useFetchData()
+    const {DataApi,fetchReflesh,DataApiBranchOnly,setFetchReflesh}=useFetchData()
 
     const {updateRealocate}=useChangeStatus()
 
+    //console.log(DataApi)
 
     const handleSearch =(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        DataApi.filter((val: { tpm: string }) => {
-            if (!input) {
-              return val
-            } else if (val.tpm == input) {
-              //return val
-              setTpmInfo(val)
-              toast('Record Found!', {
-                icon: '🚀',
-              })
-              setFetchReflesh(!fetchReflesh)
-            }
-            // else if(!tpmInfo){
-            //   toast('No Record Found!', {
-            //     icon: '🎭 ',
-            //   })
-            // }
-          })
+
+        const foundItem = DataApiBranchOnly.find((val: { tpm: string }) => val.tpm == input);
+
+
+    if (foundItem) {
+      // Match found
+      setTpmInfo(foundItem);
+
+      toast('Record Found!', {
+        icon: '🚀',
+      })
+    
+    } else {
+      // No match found
+      toast(`Tpm ${input} is Not a Valid Terminal in Your Branch`, {
+        toastId: 'error',
+        icon: '🚀',
+      });
+    }
+
 
     }
   
