@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { ToastContainer, toast } from 'react-toastify';
+
+import AgentCheckModal from "../app/components/AgentCheckModal"
 import TimeAgo from "react-timeago"
 
 import Image from 'next/image';
@@ -25,6 +27,7 @@ function Agent() {
 
   const [tpmInfo, setTpmInfo] = useState<Ttpminfo | null>(null)
 
+  const[openModat,setOpenModal]=useState<boolean>(false)
 
   interface val  { 
     tpm:string
@@ -47,12 +50,16 @@ function Agent() {
         toastId: 'success',
         icon: '🚀',
       });
+      setOpenModal(false)
     } else {
       // No match found
       toast(`Tpm ${input} Already Out`, {
         toastId: 'error',
         icon: '🚀',
       });
+
+      setOpenModal(true)
+
     }
 
     setFetchReflesh2(!fetchReflesh2)
@@ -185,6 +192,12 @@ function Agent() {
       </div>
     </div>
   </div>
+
+  {
+      openModat && 
+    <AgentCheckModal setOpenModal={setOpenModal} input={input}/>
+    }
+  
   </div>
   )
 }

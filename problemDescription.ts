@@ -9,6 +9,10 @@ export const options:Option[] = [
         value:"Not charging"
     },
     {
+        label:"Tripping Off",
+        value:"Tripping Off"
+    },
+    {
         label:"No power",
         value:"No power"
     },
