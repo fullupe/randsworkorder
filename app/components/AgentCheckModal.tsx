@@ -35,7 +35,7 @@ function TpmReAlocateModal({setOpenModal,input}:Props):React.JSX.Element | null 
 
          {/* <button   className=" place-self-end text-2xl text-white">x</button> */}
 
-         <div className="bg-white/20 p-1 text-white rounded-lg h-60 w-[80%] md:w-[50%] mx-4 flex flex-col  ">
+         <div className="bg-white/20 p-1 text-white rounded-lg h-60 w-[80%] md:w-[30%] mx-4 flex flex-col  ">
 
                   <div className="flex items-center gap-2 mx-3 my-2">
                   <ExclamationCircleIcon className="w-8 text-red-500 h-8"/>

@@ -60,7 +60,7 @@ function TpmNewAlocate({}: Props) {
       console.log(xmlHttp.responseText)
       setTpmNumber("")
       setAgentName("")
-      setBranchOffice("")
+      //setBranchOffice("")
       
     }
     xmlHttp.onerror = function () {
