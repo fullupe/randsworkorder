@@ -1,32 +1,84 @@
 
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TimeAgo from 'react-timeago'
 import { ToastContainer, toast } from 'react-toastify';
-import { MagnifyingGlassIcon,CalculatorIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon,CalculatorIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { Circles } from 'react-loader-spinner';
 
 import { Select, SelectItem } from "@tremor/react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 
 
 import {useFetchDataSheet2} from  "../../hooks/useFetchDataSheet2"
 
 import {useChangeStatus} from  "../../hooks/useChangeStatus"
+import { useUserContext } from '@/app/context/userContex';
+
+import TpmHistoryTable from '@/app/TpmHistory/data-table';
+import {columns} from "@/app/TpmHistory/columns";
+import { useFetchHistoryData } from '@/app/hooks/useFetchHistoryData';
+
 
 function Engineer() {
 
   
+  const {user}=useUserContext()
+
+  const [activeUser,setActiveUser]=useState('')
+  const [activeUserBranch,setActiveUserBranch]=useState('')
+ 
+
+  useEffect(()=>{
+   if(user){
+
+     setActiveUser(user.username);
+     setActiveUserBranch(user.userbranch);
+     
+   }
+  },[])
+
+  type  tpmHistoryType ={
+    tpm:string,
+    agentName:string,
+    branch:string,
+    problem_desc:string,
+    eng:string,
+    dateIn:Date,
+    dateOut:Date,
+    received_by:string,
+  }
+
   const [input, setInput] = useState<string>('')
   
   const [newstatus, setNewstatus] = useState<string>('')
   
   const [tpmInfo, setTpmInfo] = useState<any>('')
+  const [tpmsearchHistory, setTpmsearchHistory] = useState<tpmHistoryType[]>([])
   
   
-  const {updateSheet2_Status, Loading}=useChangeStatus()
+  const {updateSheet2_Status,addToHistory, Loading}=useChangeStatus()
   
   const {DataApi2, fetchReflesh2, setFetchReflesh2}=useFetchDataSheet2()
+
+  const {TpmHistoryData,fetchRefleshHistory,setFetchRefleshHistory}=useFetchHistoryData()
+
+ //useEffect(() => {
+  const BranchHistoryData:tpmHistoryType[] = TpmHistoryData.filter((data: { branch: string; })=>data.branch==activeUserBranch)
+  const filteredTpm = BranchHistoryData.filter((data)=>data.tpm == input)
+  //setTpmsearchHistory(BranchHistoryData)
+//}, [])
+
   
   const handleSearch =(e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
@@ -63,7 +115,8 @@ function Engineer() {
      
       ...tpmInfo,
       status:newstatus,
-      createdAt: new Date(),
+      createdAt_In: new Date(),
+      eng:activeUser,
       }
       updateSheet2_Status(request)
       
@@ -71,6 +124,23 @@ function Engineer() {
       setNewstatus("")
 
       setFetchReflesh2(true)
+
+      if(newstatus == "Ready ✅"){
+
+        const history ={
+          tpm:tpmInfo.tpm,
+          agentName:tpmInfo.agentName,
+          branch:tpmInfo.branch,
+          problem_desc:tpmInfo.problem_desc,
+          eng:activeUser,
+          dateIn:tpmInfo.createdAt_In,
+          dateOut:new Date(),
+          received_by:tpmInfo.ruser,
+          createdAt:new Date(),
+        }
+
+        addToHistory(history)
+      }
 
       //SetLoading(false)
       
@@ -95,8 +165,51 @@ function Engineer() {
     <div
       className={`py-12  px-6 bg-whitee bg-gradient-to-r from-sky-500 to-indigo-500 shadow-2xl h-[95%] md:max-w-md !important text-lg rounded-2xl relative  flex flex-col h leading- w-[98%] text-white mt-6  overflow-hidden`}
     >
+
       <ToastContainer />
       <div className="felx flex-col space-y-2">
+
+
+      <div className=" justify-center  pr-2 items-end flex flex-col cursor-pointer">
+        {
+          input && (
+        <Dialog >
+          
+      <DialogTrigger asChild>
+        {/* <Button variant="outline">Edit Profile</Button> */}
+        <ClockIcon className="w-6 h-6 mr-2 text-white border-2 border-white hover:border-gray-700 bg-gray-900 "/>
+    
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[1100px]">
+        <DialogHeader>
+          <DialogTitle>Tpm History</DialogTitle>
+          <DialogDescription>
+           Terminal:<p className="text-lg font-mono font-bold">{input}</p> History for this month.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className=" flex w-full gap-4 py-4">
+        <TpmHistoryTable columns={columns} data={filteredTpm} />
+          
+        </div>
+        <DialogFooter>
+          
+        </DialogFooter>
+      </DialogContent>
+
+      <p className="text-[9px] -mt-2 text-gray-300">TPM History</p>
+    </Dialog>
+
+          )
+        }
+        
+        
+        
+     
+        </div>
+
+
        
         
         <div className=" h-96 bg-gray-00  items-center flex flex-col pt-8 mb-20 ">
@@ -182,7 +295,7 @@ function Engineer() {
                 <small className="ml-2 text-center ">
                   <TimeAgo
                     className="text-lg text-white"
-                    date={tpmInfo.createdAt}
+                    date={tpmInfo.createdAt_In}
                   />
                 </small>
               </p>

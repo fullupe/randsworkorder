@@ -56,6 +56,8 @@ function Receiptionist() {
   const [tpmInfo, setTpmInfo] = useState<any>('')
 
   const [problemDesc, setProblemDesc] = useState<string[]>([])
+   // problem description array to string 
+   const pblem =problemDesc.map((val:string|any)=>val.value).toString()
 
 
   //console.log(problemDesc)
@@ -93,8 +95,10 @@ function Receiptionist() {
     const request = {
       ...tpmInfo,
       status:"Working On",
+      createdAt_In: new Date(),
+      ruser:activeUser,
+      problem_desc: pblem,
       createdAt: new Date(),
-      ruser:activeUser
     }
 
       add_To_Sheet2(request)

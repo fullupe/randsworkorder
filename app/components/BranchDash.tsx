@@ -6,6 +6,7 @@ import { useFetchData } from '../hooks/useFetchData';
 import { useUserContext } from '../context/userContex';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useFetchDataSheet2 } from '../hooks/useFetchDataSheet2';
+import { useFetchHistoryData } from '../hooks/useFetchHistoryData';
 
 function Dashboard() {
 
@@ -22,10 +23,13 @@ function Dashboard() {
   const [filtedBrach, SetFiltedBrach]=useState([])
 
   const [filtedBrach_Problem, SetfiltedBrach_Problem]=useState([])
+  const [dailyTpmReceived, setDailyTpmReceived] = useState<string[]>([])
+  const [dailyTpmRepaired, setDailyTpmRepaired] = useState<string[]>([])
 
   const {DataApi}=useFetchData()
 
   const {DataApi2}=useFetchDataSheet2()
+  const {TpmHistoryData}=useFetchHistoryData()
 
   
 
@@ -35,9 +39,29 @@ function Dashboard() {
 
       const filted =  await DataApi.filter((val:{branch:string})=>val.branch == activeUserBranch)
       SetFiltedBrach(filted);
-      const filtedSheet2DataByBranch = await  DataApi2.filter((val:{branch:string})=>val.branch == activeUserBranch)
+      const filtedSheet2DataByBranch = await  DataApi2.filter((val:{branch:string})=>val.branch === activeUserBranch)
+      const filtedHistoryDataByBranch = await TpmHistoryData.filter((val:{branch:string})=>val.branch === activeUserBranch)
+      
+      SetfiltedBrach_Problem(filtedSheet2DataByBranch)
 
-       SetfiltedBrach_Problem(filtedSheet2DataByBranch)
+      //const currentDate = new Date().toISOString().split('T')[0];
+      const currentDate = new Date();
+
+      // Merge two arrays
+          const mergedArray = [...filtedSheet2DataByBranch, ...filtedHistoryDataByBranch];
+          // Filter by the current date
+          const filteredArray = mergedArray.filter((item) => new Date(item.createdAt).toLocaleDateString() == currentDate.toLocaleDateString());
+          
+
+        const filteredArrayHistory = filtedHistoryDataByBranch.filter((item:any) => new Date(item.createdAt).toLocaleDateString() == currentDate.toLocaleDateString());
+
+         // Remove duplicates based on the 'id' property
+         const uniqueArray = Array.from(new Set(filteredArray.map((item) => item.tpm))).map(
+           (tpm) => filteredArray.find((item) => item.tpm == tpm)
+         );
+
+          setDailyTpmReceived(uniqueArray);
+          setDailyTpmRepaired(filteredArrayHistory)
     }
   
     getUserBranch()
@@ -125,26 +149,15 @@ const Inactive = TotalTpm - TotalWorkingTpm.length;
     <div className="flex flex-wrap md:flex-rowd w-full justify-center items-center md:items-baseline text-white  ">
 
     <Card className="max-w-sm m-3 h-[400px] bg-[#262951]">
-    <Text className="text-white">Total Tpms  {activeUserBranch}</Text>
-    <Metric className="text-white">{TotalTpm}</Metric>
-    <CategoryBar className="mt-3 text-white  w-full" values={[Active, Inactive]} colors={["emerald", "red"]} />
-    <Legend
-      className="mt-3"
-      categories={["Active Tpm", "Inactive Tpm"]}
-      colors={["emerald", "red"]}
-    />
+    <Text className="text-white text-[10px] font-bold">{activeUserBranch} - {new Date().toLocaleDateString()} <span className="decoration-inherit">(Tpm Maintenance)</span> </Text>
+    
 
-       <DonutChart
-        className="mt-6 text-4xl font-extrabold  "
-        data={activities}
-        category="count"
-        index="Active"
-        //valueFormatter={valueFormatter}
-        colors={["emerald", "red"]}
-        color="black"
-        
-        label="Tpm's"
-      />
+    <Metric className="text-white text-[16px] mt-10 font-mono font-light">   Received: <small className="text-bold text-3xl mr-4">{dailyTpmReceived.length}</small>ToDay</Metric>
+    <Metric className="text-white text-[16px] mt-10 font-mono font-light"> Repaired: <small className="text-bold text-3xl mr-4">{dailyTpmRepaired.length}</small>ToDay</Metric>
+    <Metric className="text-white text-[16px] mt-10 font-mono font-light"> In Maint: <small className="text-bold text-3xl mr-4">{dailyTpmReceived.length-dailyTpmRepaired.length}</small>ToDay</Metric>
+       
+   
+
   </Card>
 
 
