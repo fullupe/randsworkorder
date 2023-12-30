@@ -212,7 +212,7 @@ function Engineer() {
 
        
         
-        <div className=" h-96 bg-gray-00  items-center flex flex-col pt-8 mb-20 ">
+        <div className=" h-96 bg-gray-00  items-center flex flex-col pt-8f mb-20 ">
           <p className="text-gray-900 text-2xl font-bold font-poppins border-b mb-4">
             Engineers Check
           </p>
@@ -306,7 +306,7 @@ function Engineer() {
           </div>
         </div>
 
-        <hr />
+        {/* <hr /> */}
 
         <form className=" flex flex-col h-full w-full bg-yellow-00 p-4 space-y-3">
          
