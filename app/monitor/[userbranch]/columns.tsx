@@ -34,9 +34,9 @@ export const columns: ColumnDef<monitoType>[]=[
   },
   {
     header:"DATE",
-    accessorKey:"createdAt",
+    accessorKey:"createdAt_In",
     cell:({row})=>{
-      const createdAt = row.getValue("createdAt");
+      const createdAt = row.getValue("createdAt_In");
       const formatted  = new Date(createdAt as string)
       return <div className="font-medium">
         {/* {formatted} */}
