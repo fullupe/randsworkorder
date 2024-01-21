@@ -31,6 +31,10 @@ type  tpmHistoryType ={
       accessorKey:"problem_desc"
     },
     {
+      header:"SOLUTION",
+      accessorKey:"solution"
+    },
+    {
       header:"ENGINEER",
       accessorKey:"eng"
     },
