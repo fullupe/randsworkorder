@@ -33,6 +33,34 @@ interface DataTableProps<TData, TValue> {
 }
 
 function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<TData, TValue> ) {
+
+
+
+  // run diff componet 20
+
+  const [currentComponent, setCurrentComponent] = useState(1);
+
+  useEffect(() => {
+    // Switch to Component2 after 5 minutes
+    const componentSwitchTimer = setTimeout(() => {
+      setCurrentComponent(2);
+    }, 3 * 60 * 1000);
+
+    // Switch back to Component1 after 2 minutes
+    const switchBackTimer = setTimeout(() => {
+      setCurrentComponent(1);
+    }, 4 * 60 * 1000);
+
+    // Clean up timers
+    return () => {
+      clearTimeout(componentSwitchTimer);
+      clearTimeout(switchBackTimer);
+    };
+  }, [currentComponent]);
+
+
+
+  // run diff component
   
   const table = useReactTable({
     data,
@@ -88,9 +116,16 @@ useEffect(() => {
 }, []);
 
 
-  return (
-    <div className="" >
+return (
+  <div className="" >
     <div className="rounded-md border" >
+  
+            {/* {currentComponent === 1 ? <Component1 /> : <Component2 />} */}
+  
+             
+             {
+               currentComponent === 1 ? (
+
         <Table className=" mt-10" >
           <TableHeader className=" " >
             {table.getHeaderGroups().map(headerGroup=>{
@@ -115,10 +150,12 @@ useEffect(() => {
             })}
         
           </TableHeader>
-     
 
-           
-           
+
+
+
+
+             
            
           <TableBody className="" ref={tableBodyRef} style={{ height: '300px', marginTop: 100, overflowY: 'scroll' }}>
             {table.getRowModel().rows?.length ? (
@@ -134,7 +171,12 @@ useEffect(() => {
                                   row.original.status == 'Waiting for Part' ? 'bg-[#8EEEF7] text-whited' :// @ts-ignore 
                                   
                                   "bg-[#E7223B] text-white "; 
+
+
+                                  
               
+
+                                  
 
                 return (
 
@@ -156,9 +198,9 @@ useEffect(() => {
             ):(
               <TableRow className={` items-center justify-center w-full flexs`}>
                   <TableCell className="w-full items-center justifycenter bg-gray-200 min-h-screen">
-                    <div className="text-center flex flex-col w-full items-center justify-center min-h-screen" >
 
-                    <ColorRing
+                
+                  {/* <ColorRing
                     visible={true}
                     height="60"
                     width="60"
@@ -166,18 +208,41 @@ useEffect(() => {
                     wrapperStyle={{ marginTop:"20"}}
                     wrapperClass="blocks-wrapper"
                     colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-                  />
+                  /> */}
 
                   <p className="text-center text-6xl font-extrabold tracking-[10px] italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-bounce uppercase">{branch} office</p>
-                    
-                    </div>
+                              
+                   
+
                   </TableCell>
               </TableRow>
             )}
 
+
+
           </TableBody>
+
+
+
       
         </Table>
+              ):(
+                <div>
+
+                {/* <iframe  allow="autoplay"  className="pl-5 pr-5 h-screen w-screen" src="https://player.vimeo.com/video/923380340?h=0187f1938d?autoplay=1&loop=10&autopause=0&muted=0" > */}
+                <iframe   className="pl-5 pr-5 h-screen w-screen" 
+                src="https://player.vimeo.com/video/923380340?autoplay=1&loop=1&autopause=0&muted=1" 
+                allow="autoplay" 
+                //@ts-ignore
+                webkitallowfullscreen 
+                mozallowfullscreen 
+                allowFullScreen >
+                   
+                    </iframe>
+
+
+                </div>
+                )}
     </div>
 
     {/* pagination */}
