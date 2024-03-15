@@ -198,9 +198,9 @@ return (
             ):(
               <TableRow className={` items-center justify-center w-full flexs`}>
                   <TableCell className="w-full items-center justifycenter bg-gray-200 min-h-screen">
-
+                  <div className="text-center flex flex-col w-full items-center justify-center min-h-screen" >
                 
-                  {/* <ColorRing
+                  <ColorRing
                     visible={true}
                     height="60"
                     width="60"
@@ -208,12 +208,12 @@ return (
                     wrapperStyle={{ marginTop:"20"}}
                     wrapperClass="blocks-wrapper"
                     colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-                  /> */}
+                  />
 
                   <p className="text-center text-6xl font-extrabold tracking-[10px] italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-bounce uppercase">{branch} office</p>
                               
                    
-
+              </div>    
                   </TableCell>
               </TableRow>
             )}
