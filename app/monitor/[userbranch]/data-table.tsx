@@ -23,16 +23,55 @@ import { ColorRing } from "react-loader-spinner"
 
 
 
-//const Base_URL:string = process.env.NEXT_PUBLIC_BASE_URL_DATA as string;
-
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   branch:string
 }
 
+
 function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<TData, TValue> ) {
+  
+  const ACCESS_TOKEN = process.env.NEXT_PUBLIC_ACCESS_TOKEN!
+
+  const [isLive, setIsLive] = useState(false);
+  const [livevideoId,setLivevideoId]=useState('')
+
+
+
+  useEffect(() => {
+    const checkLiveStatus = async () => {
+      try {
+        // Fetch live video status from Facebook Graph API
+
+        const response = await fetch(`https://graph.facebook.com/me?fields=id,name,live_videos{stream_url,status,secure_stream_url,video}&access_token=${ACCESS_TOKEN}`);
+        
+        const data = await response.json();
+        const liveStatus = data.live_videos.data[0].status === 'LIVE';
+
+        //const videoId = data.live_videos.data[0].video.id
+        setLivevideoId(data.live_videos.data[0].video.id)
+        
+  
+        setIsLive(liveStatus);
+      } catch (error) {
+        console.error('Error checking live status:', error);
+      }
+      finally{
+        console.log("ok")
+        //console.log("live",data.status)
+      }
+    };
+
+    // Check live status initially
+    checkLiveStatus();
+
+    // Poll every 30 seconds to check live status
+    const intervalId = setInterval(checkLiveStatus, 30000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
 
 
@@ -108,20 +147,40 @@ function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<
 };
 
 // Use useEffect to listen for data source changes
-useEffect(() => {
+ useEffect(() => {
   // Call your function to listen for data source changes
   simulateDataSourceChange();
   //window.location.reload();
   
-}, []);
+ }, []);
 
 
-return (
-  <div className="" >
+ return (
+  <div className=" h-screen w-screen flexl items-center justify-centerj" >
+
+    {isLive ? (
+<div>
+
+<iframe 
+
+src={`https://web.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2Fnana.gyekye.75470%2Fvideos%2F${livevideoId}%2F&width=1280`} 
+width="1280" height="720" 
+
+className="pl-5 pr-5 h-screen w-screen"
+allow="autoplay" 
+//@ts-ignore
+webkitallowfullscreen 
+mozallowfullscreen 
+
+allowFullScreen>
+
+</iframe>
+            
+</div>
+       
+      ) : (
     <div className="rounded-md border" >
-  
-            {/* {currentComponent === 1 ? <Component1 /> : <Component2 />} */}
-  
+
              
              {
                currentComponent === 1 ? (
@@ -243,7 +302,9 @@ return (
 
                 </div>
                 )}
+
     </div>
+      )}
 
     {/* pagination */}
     {/* <div className="flex items-center justify-start space-x-2 py-4">
@@ -258,6 +319,7 @@ return (
       }} disabled ={!table.getCanNextPage()}>Next</Button>
 
     </div> */}
+    
     </div>
   )
 }

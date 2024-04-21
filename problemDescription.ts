@@ -17,6 +17,27 @@ export const options:Option[] = [
         value:"No power"
     },
     {
+        label:"Tripping off on 100%",
+        value:"Tripping Off on 100%"
+    },
+    {
+        label:"Battery Not Lasting",
+        value:"Battery Not Lasting"
+    },
+    {
+        label:"Self Printing",
+        value:"Self Printing"
+    },
+    {
+        label:"Cleaning",
+        value:"Cleaning"
+    },
+    {
+        label:"Configurations",
+        value:"Configurations"
+    },
+
+    {
         label:"Switch not working",
         value:"Switch not working"
     },
