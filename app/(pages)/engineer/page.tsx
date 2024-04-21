@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { MagnifyingGlassIcon,CalculatorIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { Circles } from 'react-loader-spinner';
 
-import options from "../../../problemDescription"
+
 //import Select  from 'react-select';
 import makeAnimated from"react-select/animated"
 const animatedComponents = makeAnimated()
