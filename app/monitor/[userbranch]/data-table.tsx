@@ -27,7 +27,60 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   branch:string
+
 }
+
+
+
+// const scheduledTimes = ['09:30:AM', '12:30:PM', '02:30:PM', '04:30:PM',      '12:47:AM',   '07:45:PM', '08:15:PM', '10:00:PM',];
+
+// const scheduledMilliseconds = scheduledTimes.map(time => {
+//   // Convert each scheduled time to milliseconds since midnight
+//   const [hours, minutes, period] = time.split(':');
+//   let hours24 = parseInt(hours, 10);
+//   if (period === 'PM' && hours24 !== 12) {
+//     hours24 += 12; // Convert PM hours to 24-hour format
+//   }
+//   const milliseconds = (hours24 * 60 + parseInt(minutes, 10)) * 60 * 1000;
+//   return milliseconds;
+// });
+
+// const getMillisecondsUntilNextScheduledTime = () => {
+//   const now = new Date();
+//   const nowMilliseconds = now.getHours() * 60 * 60 * 1000 + now.getMinutes() * 60 * 1000 + now.getSeconds() * 1000 + now.getMilliseconds();
+//   const nextScheduledTime = scheduledMilliseconds.find(time => time > nowMilliseconds) || scheduledMilliseconds[0];
+//   return nextScheduledTime - nowMilliseconds;
+// };
+
+
+function useScheduledState(scheduledTimes:any) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      setIsActive(scheduledTimes.includes(now));
+      console.log("every minute",isActive,now)
+    };
+
+    const intervalId = setInterval(checkTime, 60000); // Check every minute
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [scheduledTimes]);
+
+  useEffect(() => {
+    if (isActive) {
+      const timeoutId = setTimeout(() => setIsActive(false), 20 * 60 * 1000); // Timeout after 20 minutes
+
+      return () => clearTimeout(timeoutId); // Cleanup on state change
+    }
+  }, [isActive]);
+
+  return isActive;
+}
+
+
+
 
 
 function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<TData, TValue> ) {
@@ -51,15 +104,13 @@ function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<
 
         //const videoId = data.live_videos.data[0].video.id
         setLivevideoId(data.live_videos.data[0].video.id)
-        
-  
         setIsLive(liveStatus);
       } catch (error) {
         console.error('Error checking live status:', error);
       }
       finally{
-        console.log("ok")
-        //console.log("live",data.status)
+        //console.log("ok")
+        console.log("live","running")
       }
     };
 
@@ -67,16 +118,26 @@ function MonitorDataTable<TData, TValue>({columns,data, branch}: DataTableProps<
     checkLiveStatus();
 
     // Poll every 30 seconds to check live status
-    const intervalId = setInterval(checkLiveStatus, 30000);
+    //const intervalId = setInterval(checkLiveStatus, 30000);
 
     // Clear interval on component unmount
-    return () => clearInterval(intervalId);
+    //return () => clearInterval(intervalId);
+
   }, []);
+
+
+
+
+
+
+
 
 
 
   // run diff componet 20
 
+  
+  
   const [currentComponent, setCurrentComponent] = useState(1);
 
   useEffect(() => {
